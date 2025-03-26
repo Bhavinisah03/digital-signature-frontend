@@ -1,31 +1,17 @@
 // This global variable contains private and public key used to sign the message and verify the signature.
-let rsaKeyPair;
-let signature;
 let inputMessageFieldId = "id-input-message"
 let signedMessageFieldId = "id-signed-message"
 let senderEmailFieldId = "id-input-email"
 let verificationResultFiledId = "id-verification-result"
 
 /**
- * This function generates RSA key pair using RSA-PSS algorithm and initialized global variable rsaKeyPair
+ * This function generates RSA key pair using RSA-PSS algorithm and initialized global variable
  * refer https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/generateKey
  * @returns nothing
  *
  * Alternatively we can provide static value for public and private key but this funcition is used to create
  * private and public key each time page is loaded.
  */
-async function initializeKeyPairWithRSAAlgorithm() {
-    rsaKeyPair = await window.crypto.subtle.generateKey(
-        {
-            name: "RSA-PSS",
-            modulusLength: 2048, // Key size
-            publicExponent: new Uint8Array([1, 0, 1]), // 65537
-            hash: "SHA-256",
-        },
-        true,
-        ["sign", "verify"] // Use keys to sign and verify messages.
-    );
-}
 
 async function signMessage() {
     const inputMessage = document.getElementById(inputMessageFieldId).value;
@@ -38,16 +24,18 @@ async function signMessage() {
     try {
         const response = await fetch("http://127.0.0.1:8000/sign/", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
             body: JSON.stringify({
-                message: inputMessage,
-                user: "bhavini.1@gmail.com"
+                message: inputMessage
             })
         });
-
         const data = await response.json();
+        if(response.status == 401) {
+            window.location.href = "./login.html"; // Redirect to login page
+        }
         console.log("Signature:", data.signature);
-
         return data.signature;
     } catch (error) {
         console.error("Error:", error);
@@ -59,10 +47,7 @@ async function populateSignedMessage() {
 
     let signature = await signMessage()
     document.getElementById(signedMessageFieldId).value = signature;
-    // const verificationResult = document.getElementById(verificationResultFiledId);
-    // verificationResult.textContent = "";
 }
-
 
 /**
  * This function is used to check if signature is valid for the given message using public key.
@@ -97,33 +82,7 @@ async function isSignatureValid() {
         console.error("Error:", error);
         return false;
     }
-
-    // // Convert the signature back from base64 to Uint8Array
-    // let based64Signature;
-    // try {
-    //     based64Signature = toArrayStream(signatureBase64);
-    // } catch (error) {
-    //     // console.error('Signature is not valid base 64 version:', error.message);
-    //     return false;
-    // }
-    //
-    // // Convert message to ArrayBuffer
-    // const textEncoder = new TextEncoder();
-    // const encodedInputMessage = textEncoder.encode(inputMessage);
-    //
-    // // Verify the signature
-    // const isValid = await window.crypto.subtle.verify(
-    //     {
-    //         name: "RSA-PSS",
-    //         saltLength: 32,
-    //     },
-    //     rsaKeyPair.publicKey,
-    //     based64Signature,
-    //     encodedInputMessage
-    // );
-    // return isValid;
 }
-
 
 /**
  * This function is used to check if signature is valid for the given message using public key and show relevant
@@ -133,8 +92,6 @@ async function populateVerificationResult() {
 
     // Verify the signature
     const isValid = await isSignatureValid()
-
-    // alert(isValid)
 
     // Show verification result
     const verificationResult = document.getElementById(verificationResultFiledId);
@@ -146,6 +103,3 @@ async function populateVerificationResult() {
         verificationResult.style.color = "red";
     }
 }
-
-// Initialize the RSA key pair when the page loads
-window.onload = initializeKeyPairWithRSAAlgorithm;

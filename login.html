@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSA Digital Signature</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>Digital Signature Login Page</h1>
+
+<section>
+  <div class="container">
+    <div class="main-label"><label for="id-input-email">Enter Email:</label></div>
+    <div class="centered-element"><input id="id-input-email" rows="10" cols="100"></input><br></div>
+    <div class="main-label"><label for="id-input-password">Enter Password:</label></div>
+    <div class="centered-element">
+      <input type="password" id="id-input-password" name="password">
+    </div>
+    <button onclick="authorLogin()">Login</button>
+    <p style="color: red" id="id-error-message"></p>
+  </div>
+</section>
+
+<!-- Link to external JavaScript file -->
+<script src="js/login.js"></script>
+
+</body>
+</html>

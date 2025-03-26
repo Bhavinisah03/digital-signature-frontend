@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RSA Digital Signature</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/verify_login.js"></script>
 </head>
 <body>
 <h1>RSA Digital Signature</h1>
@@ -13,7 +14,8 @@
   <div class="container">
     <div class="main-label"><label for="id-input-message">Enter a message to sign:</label></div>
     <div class="centered-element"><textarea id="id-input-message" rows="10" cols="100"></textarea><br></div>
-    <button onclick="populateSignedMessage()">Sign Message</button>
+    <div> <button onclick="populateSignedMessage()">Sign Message</button>
+    <button onclick="logout()">Logout</button></div>
   </div>
 </section>
 <section>
@@ -24,8 +26,8 @@
 </section>
 
 <!-- Link to external JavaScript file -->
-<script src="js/conversionHelper.js"></script>
 <script src="js/app.js"></script>
+<script src="js/login.js"></script>
 
 </body>
 </html>
