@@ -1,3 +1,5 @@
+// import { DIGITAL_SERVICE_BASE_URL } from './constants.js';
+
 // This global variable contains private and public key used to sign the message and verify the signature.
 let inputMessageFieldId = "id-input-message"
 let signedMessageFieldId = "id-signed-message"
@@ -22,7 +24,7 @@ async function signMessage() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/sign/", {
+        const response = await fetch(DIGITAL_SERVICE_BASE_URL + "/sign/", {
             method: "POST",
             headers: { "Content-Type": "application/json" ,
                 "Authorization": "Bearer " + localStorage.getItem("token")
@@ -64,7 +66,7 @@ async function isSignatureValid() {
         return false;
     }
     try {
-        const response = await fetch("http://127.0.0.1:8000/verify/", {
+        const response = await fetch(DIGITAL_SERVICE_BASE_URL + "/verify/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

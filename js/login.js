@@ -1,3 +1,5 @@
+// import { DIGITAL_SERVICE_BASE_URL } from './constants.js';
+
 // This global variable contains private and public key used to login and logout.
 let authorEmailFieldId = "id-input-email"
 let authorPasswordFieldId = "id-input-password"
@@ -23,7 +25,7 @@ async function authorLogin() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/author_login", {
+        const response = await fetch(DIGITAL_SERVICE_BASE_URL + "/author_login", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

@@ -1,3 +1,5 @@
+// import { DIGITAL_SERVICE_BASE_URL } from './constants.js';
+
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem("token");
     console.log("token: " + token)
@@ -7,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "./login.html";
     } else {
         // Optionally, verify token with backend
-        fetch("http://127.0.0.1:8000/verify_token", {
+        fetch(DIGITAL_SERVICE_BASE_URL + "/verify_token", {
             method: "GET",
             headers: {"Authorization": "Bearer " + token}
         })
